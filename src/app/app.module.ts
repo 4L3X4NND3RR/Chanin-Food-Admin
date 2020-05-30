@@ -15,6 +15,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 import { AppComponent } from './app.component';
 import { MenuAdminComponent } from './components/menu-admin/menu-admin.component';
@@ -25,9 +26,11 @@ import { PedidosComponent } from './components/pedidos/pedidos.component';
 import { LoginRestauranteComponent } from './components/login-restaurante/login-restaurante.component';
 import { AuthGuardService } from './services/auth-guard.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DetallePedidoComponent } from './components/detalle-pedido/detalle-pedido.component';
 
 const routes: Routes = [
   { path: 'administracion', component: MenuAdminComponent, children: [
+    { path: 'detalle-pedido/:idPedido', component: DetallePedidoComponent},
     { path: 'inicio', component: InicioComponent },
     { path: 'pedidos', component: PedidosComponent },
     { path: 'menu', component: MenuRestauranteComponent },
@@ -47,7 +50,8 @@ const routes: Routes = [
     MenuRestauranteComponent,
     PlatillosComponent,
     PedidosComponent,
-    LoginRestauranteComponent
+    LoginRestauranteComponent,
+    DetallePedidoComponent
   ],
   imports: [
     BrowserModule,
@@ -65,6 +69,7 @@ const routes: Routes = [
     MatSnackBarModule,
     MatTableModule,
     MatPaginatorModule,
+    MatCheckboxModule,
     BrowserAnimationsModule
   ],
   providers: [],

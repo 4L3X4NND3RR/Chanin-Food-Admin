@@ -1,19 +1,43 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Pedido } from '../common/pedido';
 import { Observable } from 'rxjs';
+import { Platillo } from '../common/platillo';
+import { DetallePedido } from '../common/detalle-pedido';
+
+const headers = new HttpHeaders().set('Accept', 'application/json');
 
 @Injectable({
   providedIn: 'root'
 })
 export class PedidosService {
-  private baseUrl = 'http://localhost:8080/api/pedidos/search/findByRestauranteIdAndFechaGreaterThanAndEntregado?';
+  private baseUrlPedido = 'http://localhost:8080/api/pedidos/search/findByRestauranteIdAndFechaGreaterThanAndEntregado?';
+  private baseUrlDetallePedido = 'http://localhost:8080/api/detallePedidos/search/findByPedidoId?';
 
   constructor(private httpClient: HttpClient) { }
 
   getPedidosPaginate(pageNumber: number, pageSize: number, idR: number, entregado: boolean): Observable<GetResponsePedidos> {
     let fecha: string = this.getFechaAyer();
-    return this.httpClient.get<GetResponsePedidos>(`${this.baseUrl}id=${idR}&fecha=${fecha}&entregado=${entregado}&page=${pageNumber}&size=${pageSize}`);
+    return this.httpClient.get<GetResponsePedidos>(`${this.baseUrlPedido}id=${idR}&fecha=${fecha}&entregado=${entregado}&page=${pageNumber}&size=${pageSize}`);
+  }
+
+  getDetallePedido(idPedido: number): Observable<GetResponseDetallePedido>{
+    return this.httpClient.get<GetResponseDetallePedido>(`${this.baseUrlDetallePedido}idPedido=${idPedido}`);
+  }
+
+  getPlatillo(idDetalle: number): Observable<Platillo>{
+    const urlPlatillo = `http://localhost:8080/api/detallePedidos/${idDetalle}/platillo`;
+    return this.httpClient.get<Platillo>(urlPlatillo);
+  }
+
+  pedidoEntregado(pedido: Pedido): Observable<Pedido> {
+    const urlPedido = `http://localhost:8080/api/pedidos/${pedido.id}`;
+    return this.httpClient.put<Pedido>(urlPedido, pedido , { headers });
+  }
+
+  getPedido(idPedido: number): Observable<Pedido> {
+    const urlPedido = `http://localhost:8080/api/pedidos/${idPedido}`;
+    return this.httpClient.get<Pedido>(urlPedido);
   }
 
   getFechaAyer(): string {
@@ -34,5 +58,11 @@ interface GetResponsePedidos {
     totalElements: number,
     totalPages: number,
     number: number
+  }
+}
+
+interface GetResponseDetallePedido {
+  _embedded: {
+    detallePedidoes: DetallePedido[];
   }
 }
