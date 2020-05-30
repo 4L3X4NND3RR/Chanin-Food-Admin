@@ -11,8 +11,8 @@ const headers = new HttpHeaders().set('Accept', 'application/json');
   providedIn: 'root'
 })
 export class PedidosService {
-  private baseUrlPedido = 'http://localhost:8080/api/pedidos/search/findByRestauranteIdAndFechaGreaterThanAndEntregado?';
-  private baseUrlDetallePedido = 'http://localhost:8080/api/detallePedidos/search/findByPedidoId?';
+  private baseUrlPedido = 'http://chanin-food-api.us-east-2.elasticbeanstalk.com/api/pedidos/search/findByRestauranteIdAndFechaGreaterThanAndEntregado?';
+  private baseUrlDetallePedido = 'http://chanin-food-api.us-east-2.elasticbeanstalk.com/api/detallePedidos/search/findByPedidoId?';
 
   constructor(private httpClient: HttpClient) { }
 
@@ -26,17 +26,17 @@ export class PedidosService {
   }
 
   getPlatillo(idDetalle: number): Observable<Platillo>{
-    const urlPlatillo = `http://localhost:8080/api/detallePedidos/${idDetalle}/platillo`;
+    const urlPlatillo = `http://chanin-food-api.us-east-2.elasticbeanstalk.com/api/detallePedidos/${idDetalle}/platillo`;
     return this.httpClient.get<Platillo>(urlPlatillo);
   }
 
   pedidoEntregado(pedido: Pedido): Observable<Pedido> {
-    const urlPedido = `http://localhost:8080/api/pedidos/${pedido.id}`;
+    const urlPedido = `http://chanin-food-api.us-east-2.elasticbeanstalk.com/api/pedidos/${pedido.id}`;
     return this.httpClient.put<Pedido>(urlPedido, pedido , { headers });
   }
 
   getPedido(idPedido: number): Observable<Pedido> {
-    const urlPedido = `http://localhost:8080/api/pedidos/${idPedido}`;
+    const urlPedido = `http://chanin-food-api.us-east-2.elasticbeanstalk.com/api/pedidos/${idPedido}`;
     return this.httpClient.get<Pedido>(urlPedido);
   }
 
