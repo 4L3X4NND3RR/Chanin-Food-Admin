@@ -27,9 +27,8 @@ export class AutenticacionService {
 
     if (transaction.status !== 'SUCCESS') {
       throw Error('We cannot handle the ' + transaction.status + ' status');
-    }
+    } 
     this.isAuthenticated.next(true);
-
     this.authClient.session.setCookieAndRedirect(transaction.sessionToken);
   }
 

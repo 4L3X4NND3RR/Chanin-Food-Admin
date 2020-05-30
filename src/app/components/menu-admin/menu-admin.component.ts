@@ -3,6 +3,8 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { AutenticacionService } from 'src/app/services/autenticacion.service';
+import { MensajeService } from 'src/app/services/mensaje.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-menu-admin',
@@ -12,9 +14,17 @@ import { AutenticacionService } from 'src/app/services/autenticacion.service';
 export class MenuAdminComponent implements OnInit {
   isAuthenticated: boolean;
 
-  constructor(private breakpointObserver: BreakpointObserver, public authService: AutenticacionService) { 
+  constructor(private breakpointObserver: BreakpointObserver, public authService: AutenticacionService, private mensajeService: MensajeService, private snack: MatSnackBar) { 
     this.authService.isAuthenticated.subscribe(
       (isAuthenticated: boolean) => this.isAuthenticated = isAuthenticated
+    );
+
+    this.mensajeService.nuevoMensaje.subscribe(
+      value => {
+        this.snack.open('nuevo pedido', '', {
+          duration: 2000
+        })
+      }
     );
   }
 
@@ -28,6 +38,6 @@ export class MenuAdminComponent implements OnInit {
   }
 
   logout() {
-    this.authService.logout('/');
+    this.authService.logout('/login');
   }
 }
